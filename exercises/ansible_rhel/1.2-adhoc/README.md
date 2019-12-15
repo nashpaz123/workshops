@@ -30,7 +30,7 @@ To reference inventory hosts, you supply a host pattern to the ansible command. 
 The most basic host pattern is the name for a single managed host listed in the inventory file. This specifies that the host will be the only one in the inventory file that will be acted upon by the ansible command. Run:
 
 ```bash
-[student<X@>ansible ~]$ ansible node1 --list-hosts
+[root@>ansible ~]$ ansible node1 --list-hosts
   hosts (1):
     node1
 ```
@@ -63,7 +63,7 @@ In the lab environment provided to you an `.ansible.cfg` file has already been c
 Output the content of the file:
 
 ```bash
-[student<X>@ansible ~]$ cat .ansible.cfg
+[root@ansible ~]$ cat .ansible.cfg
 [defaults]
 stdout_callback = yaml
 connection = smart
@@ -79,9 +79,9 @@ There are multiple configuration flags provided. Most of them are not of interes
 Output the content of your dedicated inventory:
 
 ```bash
-[student<X>@ansible ~]$ vi /root/hosts
+[root@ansible ~]$ vi /root/hosts
 [all:vars]
-ansible_user=student<X>
+ansible_user=root
 ansible_ssh_pass=ansible
 ansible_port=22
 
@@ -113,7 +113,7 @@ Let's start with something really basic - pinging a host. To do that we use the 
 Ansible needs to know that it should use the `ping` module: The `-m` option defines which Ansible module to use. Options can be passed to the specified modul using the `-a` option.
 
 ```bash
-[student<X>@ansible ~]$ ansible web -m ping
+[root@ansible ~]$ ansible web -m ping
 node2 | SUCCESS => {
     "ansible_facts": {
         "discovered_interpreter_python": "/usr/bin/python"
@@ -131,7 +131,7 @@ As you see each node reports the successful execution and the actual result - he
 Ansible comes with a lot of modules by default. To list all modules run:
 
 ```bash
-[student<X>@ansible ~]$ ansible-doc -l
+[root@ansible ~]$ ansible-doc -l
 ```
 
 > **Tip**
@@ -141,13 +141,13 @@ Ansible comes with a lot of modules by default. To list all modules run:
 To find a module try e.g.:
 
 ```bash
-[student<X>@ansible ~]$ ansible-doc -l | grep -i user
+[root@ansible ~]$ ansible-doc -l | grep -i user
 ```
 
 Get help for a specific module including usage examples:
 
 ```bash
-[student<X>@ansible ~]$ ansible-doc user
+[root@ansible ~]$ ansible-doc user
 ```
 
 > **Tip**
@@ -159,22 +159,22 @@ Get help for a specific module including usage examples:
 Now let's see how we can run a good ol' fashioned Linux command and format the output using the `command` module. It simply executes the specified command on a managed host:
 
 ```bash
-[student<X>@ansible ~]$ ansible node1 -m command -a "id"
+[root@ansible ~]$ ansible node1 -m command -a "id"
 node1 | CHANGED | rc=0 >>
-uid=1001(student1) gid=1001(student1) Gruppen=1001(student1) Kontext=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+uid=1001(root) gid=1001(root) Gruppen=1001(root) Kontext=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
 ```
 In this case the module is called `command` and the option passed with `-a` is the actual command to run. Try to run this ad hoc command on all managed hosts using the `all` host pattern.
 
 Another example: Have a quick look at the kernel versions your hosts are running:
 
 ```bash
-[student<X>@ansible ~]$ ansible all -m command -a 'uname -r'
+[root@ansible ~]$ ansible all -m command -a 'uname -r'
 ```
 
 Sometimes it’s desirable to have the output for a host on one line:
 
 ```bash
-[student<X>@ansible ~]$ ansible all -m command -a 'uname -r' -o
+[root@ansible ~]$ ansible all -m command -a 'uname -r' -o
 ```
 
 > **Tip**
@@ -188,7 +188,7 @@ Using the `copy` module, execute an ad hoc command on `node1` to change the cont
 Run the following:
 
 ```bash
-[student<X>@ansible ~]$ ansible node1 -m copy -a 'content="Managed by Ansible\n" dest=/etc/motd'
+[root@ansible ~]$ ansible node1 -m copy -a 'content="Managed by Ansible\n" dest=/etc/motd'
 ```
 
 > **Tip**
@@ -207,7 +207,7 @@ node1 | CHANGED => {
     "owner": "root",
     "secontext": "system_u:object_r:etc_t:s0",
     "size": 19,
-    "src": "/home/student1/.ansible/tmp/ansible-tmp-1557857641.21-120920996103312/source",
+    "src": "/home/root/.ansible/tmp/ansible-tmp-1557857641.21-120920996103312/source",
     "state": "file",
     "uid": 0
 ```
