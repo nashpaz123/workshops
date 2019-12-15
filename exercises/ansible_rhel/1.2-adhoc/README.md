@@ -10,7 +10,7 @@ To use the ansible command for host management, you need to provide an inventory
 
 ```bash
 [all:vars]
-ansible_user=student1
+ansible_user=root
 ansible_ssh_pass=PASSWORD
 ansible_port=22
 
@@ -38,10 +38,10 @@ The most basic host pattern is the name for a single managed host listed in the 
 An inventory file can contain a lot more information, it can organize your hosts in groups or define variables. In our example, the current inventory has the groups `web` and `control`. Run Ansible with these host patterns and observe the output:
 
 ```bash
-[student<X@>ansible ~]$ ansible web  --list-hosts
-[student<X@>ansible ~]$ ansible web,ansible --list-hosts
-[student<X@>ansible ~]$ ansible 'node*' --list-hosts
-[student<X@>ansible ~]$ ansible all --list-hosts
+[root@>ansible ~]$ ansible web  --list-hosts
+[root@>ansible ~]$ ansible web,ansible --list-hosts
+[root@>ansible ~]$ ansible 'node*' --list-hosts
+[root@>ansible ~]$ ansible all --list-hosts
 ```
 
 As you see it is OK to put systems in more than one group. For instance, a server could be both a web server and a database server. Note that in Ansible the groups are not necessarily hierarchical.
@@ -58,12 +58,7 @@ The behavior of Ansible can be customized by modifying settings in Ansible’s i
 >
 > The recommended practice is to create an `ansible.cfg` file in the directory from which you run Ansible commands. This directory would also contain any files used by your Ansible project, such as the inventory and playbooks. Another recommended practice is to create a file `.ansible.cfg` in your home directory.
 
-In the lab environment provided to you an `.ansible.cfg` file has already been created and filled with the necessary details in the home directory of your `student<X>` user on the control node:
-
-```bash
-[student<X>@ansible ~]$ ls -la .ansible.cfg
--rw-r--r--. 1 student<X> student<X> 231 14. Mai 17:17 .ansible.cfg
-```
+In the lab environment provided to you an `.ansible.cfg` file has already been created and filled with the necessary details in the home directory of your `root` user on the control node:
 
 Output the content of the file:
 
@@ -76,7 +71,7 @@ timeout = 60
 deprecation_warnings = False
 host_key_checking = False
 retry_files_enabled = False
-inventory = /home/student<X>/lab_inventory/hosts
+inventory = /root/hosts
 ```
 
 There are multiple configuration flags provided. Most of them are not of interest here, but make sure to note the last line: there the location of the inventory is provided. That is the way Ansible knew in the previous commands what machines to connect to.
@@ -84,7 +79,7 @@ There are multiple configuration flags provided. Most of them are not of interes
 Output the content of your dedicated inventory:
 
 ```bash
-[student<X>@ansible ~]$ cat /home/student<X>/lab_inventory/hosts
+[student<X>@ansible ~]$ vi /root/hosts
 [all:vars]
 ansible_user=student<X>
 ansible_ssh_pass=ansible
@@ -190,38 +185,15 @@ Sometimes it’s desirable to have the output for a host on one line:
 
 Using the `copy` module, execute an ad hoc command on `node1` to change the contents of the `/etc/motd` file. **The content is handed to the module through an option in this case**.
 
-Run the following, but **expect an error**:
+Run the following:
 
 ```bash
 [student<X>@ansible ~]$ ansible node1 -m copy -a 'content="Managed by Ansible\n" dest=/etc/motd'
 ```
 
-As mentioned this produces an **error**:
-
-```bash
-    node1 | FAILED! => {
-        "changed": false,
-        "checksum": "a314620457effe3a1db7e02eacd2b3fe8a8badca",
-        "failed": true,
-        "msg": "Destination /etc not writable"
-    }
-```
-
-The output of the ad hoc command is screaming **FAILED** in red at you. Why? Because user **student\<X\>** is not allowed to write the motd file.
-
-Now this is a case for privilege escalation and the reason `sudo` has to be setup properly. We need to instruct Ansible to use `sudo` to run the command as root by using the parameter `-b` (think "become").
-
 > **Tip**
 >
-> Ansible will connect to the machines using your current user name (student\<X\> in this case), just like SSH would. To override the remote user name, you could use the `-u` parameter.
-
-For us it’s okay to connect as `student<X>` because `sudo` is set up. Change the command to use the `-b` parameter and run again:
-
-```bash
-[student<X>@ansible ~]$ ansible node1 -m copy -a 'content="Managed by Ansible\n" dest=/etc/motd' -b
-```
-
-This time the command is a success:
+> Ansible will connect to the machines using your current user name , just like SSH would. To override the remote user name, you could use the `-u` parameter.
 
 ```bash
 node1 | CHANGED => {
@@ -243,7 +215,7 @@ node1 | CHANGED => {
 Use Ansible with the generic `command` module to check the content of the motd file:
 
 ```bash
-[student<X>@ansible ~]$ ansible node1 -m command -a 'cat /etc/motd'
+[root>@ansible ~]$ ansible node1 -m command -a 'cat /etc/motd'
 node1 | CHANGED | rc=0 >>
 Managed by Ansible
 ```
@@ -277,9 +249,9 @@ Run the `ansible node1 -m copy …​` command from above again. Note:
 > **Solution below\!**
 
 ```bash
-[student<X>@ansible ~]$ ansible-doc -l | grep -i yum
-[student<X>@ansible ~]$ ansible-doc yum
-[student<X>@ansible ~]$ ansible node1 -m yum -a 'name=screen state=latest' -b
+[root@ansible ~]$ ansible-doc -l | grep -i yum
+[root@ansible ~]$ ansible-doc yum
+[root@ansible ~]$ ansible node1 -m yum -a 'name=screen state=latest' -b
 ```
 
 ----
