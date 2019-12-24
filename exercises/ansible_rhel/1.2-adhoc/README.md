@@ -58,12 +58,12 @@ The behavior of Ansible can be customized by modifying settings in Ansible’s i
 >
 > The recommended practice is to create an `ansible.cfg` file in the directory from which you run Ansible commands. This directory would also contain any files used by your Ansible project, such as the inventory and playbooks. Another recommended practice is to create a file `.ansible.cfg` in your home directory.
 
-In the lab environment provided to you an `.ansible.cfg` file has already been created and filled with the necessary details in the home directory of your `root` user on the control node:
+Create the `.ansible.cfg` file with the necessary details in the home directory of your `root` user on the control node:
 
 Output the content of the file:
 
 ```bash
-[root@ansible ~]$ cat .ansible.cfg
+[root@ansible ~]$ vim .ansible.cfg
 [defaults]
 stdout_callback = yaml
 connection = smart
@@ -96,13 +96,13 @@ ansible ansible_host=44.55.66.77
 
 > **Tip**
 >
-> Note that each student has an individual lab environment. The IP addresses shown above are only an example and the IP addresses of your individual environments are different. As with the other cases, replace **\<X\>** with your actual student number.
+> Note that each student should use an individual lab environment. The IP addresses shown above are only an example and the IP addresses of your individual environments are different..
 
 ## Step 2.3 - Ping a host
 
 > **Warning**
 >
-> **Don’t forget to run the commands from the home directory of your student user, `/home/student<X>`. That is where your `.ansible.cfg` file is located, without it Ansible will not know what which inventory to use.**
+> **Don’t forget to run the commands from the home directory of your root user. That is where your `.ansible.cfg` file is located, without it Ansible will not know what which inventory to use.**
 
 Let's start with something really basic - pinging a host. To do that we use the Ansible `ping` module. The `ping` module makes sure our target hosts are responsive. Basically, it connects to the managed host, executes a small script there and collects the results. This ensures that the managed host is reachable and that Ansible is able to execute commands properly on it.
 
