@@ -74,7 +74,7 @@ Add a line to the template to list the current kernel of the managed node.
   - Find the fact:
 
 ```bash
-[student<X>@ansible ansible-files]$ ansible node1 -m setup|grep -i kernel
+[root@ansible ansible-files]$ ansible node1 -m setup|grep -i kernel
        "ansible_kernel": "3.10.0-693.el7.x86_64",
 ```
 
