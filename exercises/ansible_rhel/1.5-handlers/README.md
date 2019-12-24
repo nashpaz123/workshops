@@ -21,12 +21,12 @@ For more on this, please refer to the documentation: <http://jinja.pocoo.org/doc
 
 As an example you would like to install an FTP server, but only on hosts that are in the "ftpserver" inventory group.
 
-To do that, first edit the inventory to add another group, and place `node2` in it. Make sure that that IP address of `node2` is always the same when `node2` is listed. Edit the inventory `~/lab_inventory/hosts` to look like the following listing:
+To do that, first edit the inventory to add another group, and place `node2` in it. Make sure that that IP address of `node2` is always the same when `node2` is listed. Edit the inventory `/root/hosts` to look like the following listing:
 
 ```ini
 [all:vars]
-ansible_user=student1
-ansible_ssh_pass=ansible
+ansible_user=root
+ansible_ssh_pass=PASSWORD
 ansible_port=22
 
 [web]
@@ -85,8 +85,8 @@ As a an example, let’s write a Playbook that:
 First we need the file Ansible will deploy, let’s just take the one from node1. Remember to replace the IP address shown in the listing below with the IP address from your individual `node1`.
 
 ```bash
-[student<X>@ansible ansible-files]$ scp 11.22.33.44:/etc/httpd/conf/httpd.conf ~/ansible-files/.
-student<X>@11.22.33.44's password:
+[root@ansible ansible-files]$ scp 11.22.33.44:/etc/httpd/conf/httpd.conf ~/ansible-files/.
+root@11.22.33.44's password:
 httpd.conf             
 ```
 
@@ -135,9 +135,9 @@ Listen 8080
 Apache should now listen on port 8080. Easy enough to verify:
 
 ```bash
-[student1@ansible ansible-files]$ curl http://22.33.44.55
+[root@ansible ansible-files]$ curl http://22.33.44.55
 curl: (7) Failed connect to 22.33.44.55:80; Connection refused
-[student1@ansible ansible-files]$ curl http://22.33.44.55:8080
+[root@ansible ansible-files]$ curl http://22.33.44.55:8080
 <body>
 <h1>This is a production webserver, take care!</h1>
 </body>
@@ -148,7 +148,7 @@ Feel free to change the httpd.conf file again and run the Playbook.
 
 Loops enable us to repeat the same task over and over again. For example, lets say you want to create multiple users. By using an Ansible loop, you can do that in a single task. Loops can also iterate over more than just basic lists. For example, if you have a list of users with their coresponding group, loop can iterate over them as well. Find out more about loops in the [Ansible Loops](https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html) documentation.
 
-To show the loops feature we will generate three new users on `node1`. For that, create the file `loop_users.yml` in `~/ansible-files` on your control node as your student user. We will use the `user` module to generate the user accounts.
+To show the loops feature we will generate three new users on `node1`. For that, create the file `loop_users.yml` in `~/ansible-files` on your control node as your root user. We will use the `user` module to generate the user accounts.
 
 <!-- {% raw %} -->
 ```yaml
