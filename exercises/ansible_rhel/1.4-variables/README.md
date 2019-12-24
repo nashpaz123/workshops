@@ -34,10 +34,10 @@ The recommended practice to provide variables in the inventory is to define them
 
 For understanding and practice let’s do a lab. Following up on the theme "Let’s build a webserver. Or two. Or even more…​", you will change the `index.html` to show the development environment (dev/prod) a server is deployed in.
 
-On the ansible control host, as the `student<X>` user, create the directories to hold the variable definitions in `~/ansible-files/`:
+On the ansible control host, as the root user, create the directories to hold the variable definitions in `~/ansible-files/`:
 
 ```bash
-[student<X>@ansible ansible-files]$ mkdir host_vars group_vars
+[root@ansible ansible-files]$ mkdir host_vars group_vars
 ```
 
 Now create two files containing variable definitions. We’ll define a variable named `stage` which will point to different environments, `dev` or `prod`:
@@ -109,7 +109,7 @@ Create a new Playbook called `deploy_index_html.yml` in the `~/ansible-files/` d
   - Run the Playbook:
 
 ```bash
-[student<X>@ansible ansible-files]$ ansible-playbook deploy_index_html.yml
+[root@ansible ansible-files]$ ansible-playbook deploy_index_html.yml
 ```
 
 ## Step 4.4 - Test the Result
@@ -117,19 +117,19 @@ Create a new Playbook called `deploy_index_html.yml` in the `~/ansible-files/` d
 The Playbook should copy different files as index.html to the hosts, use `curl` to test it. Check the inventory again if you forgot the IP addresses of your nodes.
 
 ```bash
-[student<X>@ansible ansible-files]$ grep node ~/lab_inventory/hosts
+[root@ansible ansible-files]$ grep node ~/lab_inventory/hosts
 node1 ansible_host=11.22.33.44
 node2 ansible_host=22.33.44.55
 node3 ansible_host=33.44.55.66
-[student<X>@ansible ansible-files]$ curl http://11.22.33.44
+[root@ansible ansible-files]$ curl http://11.22.33.44
 <body>
 <h1>This is a development webserver, have fun!</h1>
 </body>
-[student1@ansible ansible-files]$ curl http://22.33.44.55
+[root@ansible ansible-files]$ curl http://22.33.44.55
 <body>
 <h1>This is a production webserver, take care!</h1>
 </body>
-[student1@ansible ansible-files]$ curl http://33.44.55.66
+[root@ansible ansible-files]$ curl http://33.44.55.66
 <body>
 <h1>This is a development webserver, have fun!</h1>
 </body>
@@ -143,21 +143,21 @@ node3 ansible_host=33.44.55.66
 
 Ansible facts are variables that are automatically discovered by Ansible from a managed host. Remember the "Gathering Facts" task listed in the output of each `ansible-playbook` execution? At that moment the facts are gathered for each managed nodes. Facts can also be pulled by the `setup` module. They contain useful information stored into variables that administrators can reuse.
 
-To get an idea what facts Ansible collects by default, on your control node as your student user run:
+To get an idea what facts Ansible collects by default, on your control node as your root user run:
 
 ```bash
-[student<X>@ansible ansible-files]$ ansible node1 -m setup
+[root@ansible ansible-files]$ ansible node1 -m setup
 ```
 
 This might be a bit too much, you can use filters to limit the output to certain facts, the expression is shell-style wildcard:
 
 ```bash
-[student<X>@ansible ansible-files]$ ansible node1 -m setup -a 'filter=ansible_eth0'
+[root@ansible ansible-files]$ ansible node1 -m setup -a 'filter=ansible_eth0'
 ```
 Or what about only looking for memory related facts:
 
 ```bash
-[student<X>@ansible ansible-files]$ ansible node1 -m setup -a 'filter=ansible_*_mb'
+[root@ansible ansible-files]$ ansible node1 -m setup -a 'filter=ansible_*_mb'
 ```
 
 ## Step 4.6 - Challenge Lab: Facts
@@ -173,8 +173,8 @@ Or what about only looking for memory related facts:
 > **Solution below\!**
 
 ```bash
-[student<X>@ansible ansible-files]$ ansible node1 -m setup|grep distribution
-[student<X>@ansible ansible-files]$ ansible node1 -m setup -a 'filter=ansible_distribution' -o
+[root@ansible ansible-files]$ ansible node1 -m setup|grep distribution
+[root@ansible ansible-files]$ ansible node1 -m setup -a 'filter=ansible_distribution' -o
 ```
 
 ## Step 4.7 - Using Facts in Playbooks
@@ -200,7 +200,7 @@ Facts can be used in a Playbook like variables, using the proper naming, of cour
 Execute it to see how the facts are printed:
 
 ```bash
-[student<X>@ansible ansible-files]$ ansible-playbook facts.yml
+[root@ansible ansible-files]$ ansible-playbook facts.yml
 
 PLAY [Output facts within a playbook] ******************************************
 
