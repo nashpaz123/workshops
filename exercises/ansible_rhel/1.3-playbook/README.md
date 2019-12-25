@@ -137,7 +137,7 @@ The output should not report any errors but provide an overview of the tasks exe
 Use SSH to make sure Apache has been installed on `node1`. The necessary IP address is provided in the inventory. Grep for the IP address there and use it to SSH to the node.
 
 ```bash
-[root@ansible ansible-files]$ grep node1 /root/hosts
+[root@ansible ansible-files]$ grep node1 ~/hosts
 node1 ansible_host=11.22.33.44
 [root@ansible ansible-files]$ ssh 11.22.33.44
 root@11.22.33.44's password:
