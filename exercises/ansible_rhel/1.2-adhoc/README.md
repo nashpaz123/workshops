@@ -71,7 +71,7 @@ timeout = 60
 deprecation_warnings = False
 host_key_checking = False
 retry_files_enabled = False
-inventory = /root/hosts
+inventory = ~/hosts
 ```
 
 There are multiple configuration flags provided. Most of them are not of interest here, but make sure to note the last line: there the location of the inventory is provided. That is the way Ansible knew in the previous commands what machines to connect to.
@@ -79,10 +79,10 @@ There are multiple configuration flags provided. Most of them are not of interes
 Output the content of your dedicated inventory:
 
 ```bash
-[root@ansible ~]$ vi /root/hosts
+[root@ansible ~]$ vi ~/hosts
 [all:vars]
-ansible_user=root
-ansible_ssh_pass=ansible
+ansible_user=ec2-user
+ansible_ssh_private_key_file=/home/ec2-user/.ssh/id_rsa
 ansible_port=22
 
 [web]
