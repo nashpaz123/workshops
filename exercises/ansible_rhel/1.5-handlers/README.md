@@ -87,7 +87,11 @@ First we need the file Ansible will deploy, let’s just take the one from node1
 ```bash
 [root@ansible ansible-files]$ scp 11.22.33.44:/etc/httpd/conf/httpd.conf ~/ansible-files/.
 root@11.22.33.44's password:
-httpd.conf             
+httpd.conf        
+```
+or on ubuntu:
+```bash
+[root@ansible ansible-files]$ scp 11.22.33.44:/etc/apache2/httpd.conf ~/ansible-files/.
 ```
 
 Next, create the Playbook `httpd_conf.yml`. Make sure that you are in the directory `~/ansible-files`.
@@ -224,7 +228,7 @@ Check the output:
 Verify that the user `prod_user` was indeed created on `node1`:
 
 ```bash
-[student<X>@ansible ansible-files]$ ansible node1 -m command -a "id dev_user"
+[root@ansible ansible-files]$ ansible node1 -m command -a "id dev_user"
 node1 | CHANGED | rc=0 >>
 uid=1002(dev_user) gid=1002(dev_user) Gruppen=1002(dev_user),50(ftp)
 ```
