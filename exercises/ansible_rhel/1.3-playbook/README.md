@@ -155,6 +155,10 @@ Log out of `node1` with the command `exit` so that you are back on the control h
 [root@ansible ansible-files]$ ansible node1 -m command -a 'rpm -qi httpd'
 ```
 
+Or on Ubuntu:
+```bash
+[root@ansible ansible-files]$ ansible node1 -m command -a 'dpkg --get-selections | grep httpd'
+```
 Run the Playbook a second time, and compare the output: The output changed from "changed" to "ok", and the color changed from yellow to green. Also the "PLAY RECAP" is different now. This make it easy to spot what Ansible actually did.
 
 ## Step 3.4 - Extend your Playbook: Start & Enable Apache
