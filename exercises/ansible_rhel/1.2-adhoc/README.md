@@ -10,8 +10,8 @@ To use the ansible command for host management, you need to provide an inventory
 
 ```bash
 [all:vars]
-ansible_user=root
-ansible_ssh_pass=PASSWORD
+ansible_user=ec2-user
+ansible_ssh_private_key_file=/home/ec2-user/.ssh/id_rsa
 ansible_port=22
 
 [web]
