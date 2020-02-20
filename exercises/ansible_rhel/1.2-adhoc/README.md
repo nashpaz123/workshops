@@ -44,6 +44,10 @@ An inventory file can contain a lot more information, it can organize your hosts
 [root@>ansible ~]$ ansible web,ansible --list-hosts
 [root@>ansible ~]$ ansible 'node*' --list-hosts
 [root@>ansible ~]$ ansible all --list-hosts
+[root@>ansible ~]$ ansible-inventory --list
+
+[root@>ansible ~]$ ansible-inventory -i bla.txt --list 
+#also see dynamic inventory at https://docs.ansible.com/ansible/latest/user_guide/intro_dynamic_inventory.html#inventory-script-example-aws-ec2
 ```
 
 As you see it is OK to put systems in more than one group. For instance, a server could be both a web server and a database server. Note that in Ansible the groups are not necessarily hierarchical.
